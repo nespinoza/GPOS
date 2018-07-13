@@ -103,7 +103,7 @@ for L in range(0, len(idx_names)+1):
                 # Generate gaussian process. For this, sample lambdas from uniform distribution:
                 ndim = Xc.shape[0]
                 lambdas = np.random.uniform(0,10,ndim)
-                fout.write('# Lambdas: '+' '.join(lambdas.astype('str'))+' | Sigma: '+str(sigma)+' ppm | Max (GP) Sigma: '+str(max_sigma)+' ppm\n')
+                fout.write('# Lambdas: '+' '.join(lambdas.astype('str'))+' | Sigma: '+str(sigma*1e6)+' ppm | Max (GP) Sigma: '+str(max_sigma)+' ppm\n')
                 fout.write('# Times \t Simulated data \t Transit Model \t GP\n')
                 # Compute kernel:
                 kernel = max_var*george.kernels.ExpSquaredKernel(lambdas,ndim=ndim,axes=range(ndim))
