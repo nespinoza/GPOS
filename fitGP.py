@@ -15,6 +15,9 @@ parser = argparse.ArgumentParser()
 parser.add_argument('-lcfile', default=None)
 # This reads the external parameters to fit (assumed to go in the columns):
 parser.add_argument('-eparamfile', default=None)
+# This defines which of the external parameters you want to use, separated by commas.
+# Default is all:
+parser.add_argument('-eparamtouse', default='all')
 # This reads an output folder:
 parser.add_argument('-ofolder', default='')
 # This reads a value for the mean of Rp/Rs:
@@ -37,6 +40,7 @@ out_folder = args.ofolder
 t0,P,aR,inc,ecc,omega = t[len(t)/2],3.0,10.,88.0,0.0,90.0
 
 eparamfilename = args.eparamfile
+eparams = args.eparamtouse
 data = np.genfromtxt(eparamfilename,unpack=True)
 for i in range(len(data)):
     x = (data[i] - np.mean(data[i]))/np.sqrt(np.var(data[i]))
@@ -44,7 +48,9 @@ for i in range(len(data)):
         X = x
     else:
         X = np.vstack((X,x))
-
+if eparams != 'all':
+    idx_params = np.array(eparams.split(',')).astype('int')
+    X = X[idx_params,:]
 # Sace other inputs:
 ld_law = args.ldlaw
 pmean = np.double(args.pmean)
